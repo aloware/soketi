@@ -251,6 +251,11 @@ export class Server {
     public closing = false;
 
     /**
+     * The in-progress stop, so repeated stop calls share one shutdown.
+     */
+    protected stopping: Promise<void>|null = null;
+
+    /**
      * The server process.
      */
     private serverProcess;
@@ -410,6 +415,10 @@ export class Server {
      * Stop the server.
      */
     stop(): Promise<void> {
+        if (this.stopping) {
+            return this.stopping;
+        }
+
         this.closing = true;
 
         Log.br();
@@ -417,8 +426,8 @@ export class Server {
         Log.warning('⚡ The server is closing and signaling the existing connections to terminate.');
         Log.br();
 
-        return this.wsHandler.closeAllLocalSockets().then(() => {
-            return new Promise(resolve => {
+        return this.stopping = this.wsHandler.closeAllLocalSockets().then(() => {
+            return new Promise<void>(resolve => {
                 if (this.options.debug) {
                     Log.warningTitle('⚡ All sockets were closed. Now closing the server.');
                 }
