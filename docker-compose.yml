@@ -13,11 +13,6 @@ services:
     environment:
       - SERVICES=sqs,s3
       - DEBUG=1
-      - HOST_TMP_FOLDER=/tmp/localstack
-      - DOCKER_HOST=unix:///var/run/docker.sock
-    volumes:
-      - "${TMPDIR:-/tmp}/localstack:/tmp/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       - soketi
     healthcheck:
