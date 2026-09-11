@@ -233,6 +233,11 @@ export class Cli {
             handleFailure();
         });
 
+        process.on('unhandledRejection', (reason) => {
+            Log.error('process unhandledRejection');
+            Log.error({ err: reason });
+        });
+
         return this.server.start();
     }
 }
