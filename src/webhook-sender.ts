@@ -64,7 +64,7 @@ export class WebhookSender {
                 }
             };
 
-            server.appManager.findByKey(appKey).then(app => {
+            return server.appManager.findByKey(appKey).then(app => {
                 if (!app) {
                     Log.warning(`Webhook job ${job.id} dropped: no app found for key "${appKey}".`);
 
