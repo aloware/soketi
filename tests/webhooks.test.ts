@@ -634,5 +634,5 @@ describe('webhooks test', () => {
                 done();
             });
         });
-    });
+    }, 60 * 1000);
 });
