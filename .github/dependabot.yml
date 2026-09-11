@@ -1,10 +1,4 @@
 version: 2
-registries:
-  quay:
-    type: docker-registry
-    url: quay.io
-    username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-    password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
 updates:
   - package-ecosystem: github-actions
     directory: "/"
@@ -15,8 +9,6 @@ updates:
       interval: weekly
     open-pull-requests-limit: 100
     rebase-strategy: auto
-    reviewers:
-      - rennokki
     labels:
       - dependabot:actions
       - auto:dependabot
@@ -67,8 +59,6 @@ updates:
       interval: weekly
     open-pull-requests-limit: 100
     rebase-strategy: auto
-    reviewers:
-      - rennokki
     labels:
       - dependabot:npm
       - auto:dependabot
@@ -77,14 +67,10 @@ updates:
 
   - package-ecosystem: docker
     directory: "/"
-    registries:
-      - quay
     schedule:
       interval: weekly
     open-pull-requests-limit: 100
     rebase-strategy: auto
-    reviewers:
-      - rennokki
     labels:
       - dependabot:docker
       - auto:dependabot

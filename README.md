@@ -1,8 +1,15 @@
 # soketi
 
+> **Aloware fork.** The last upstream release of [soketi/soketi](https://github.com/soketi/soketi) is 1.6.1 from March 2024.
+> Aloware maintains this fork for its own deployment. The maintained branch is `1.x`. It runs on Node 22 and 24.
+> Releases are published as `@aloware/soketi` on [GitHub Releases](https://github.com/aloware/soketi/releases) as an npm tarball,
+> and on [GitHub Packages](https://github.com/aloware/soketi/pkgs/npm/soketi). Container images are at `ghcr.io/aloware/soketi`.
+> To install a release, run `npm install -g https://github.com/aloware/soketi/releases/download/<tag>/aloware-soketi-<version>.tgz`.
+> The license stays AGPL-3.0.
+
 <img src="assets/logo.png" width="120" />
 
-![CI](https://github.com/soketi/soketi/workflows/CI/badge.svg?branch=master)
+![CI](https://github.com/aloware/soketi/workflows/CI/badge.svg?branch=1.x)
 [![codecov](https://codecov.io/gh/soketi/soketi/branch/master/graph/badge.svg)](https://codecov.io/gh/soketi/soketi/branch/master)
 [![Latest Stable Version](https://img.shields.io/github/v/release/soketi/soketi)](https://www.npmjs.com/package/@soketi/soketi)
 [![Total Downloads](https://img.shields.io/npm/dt/@soketi/soketi)](https://www.npmjs.com/package/@soketi/soketi)
