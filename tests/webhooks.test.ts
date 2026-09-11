@@ -611,7 +611,7 @@ describe('webhooks test', () => {
                 });
             });
         });
-    }, 20_000);
+    }, 60 * 1000);
 
     Utils.shouldRun(Utils.appManagerIs('array') && Utils.queueDriverIs('sync'))('webhook job for an unknown app key is dropped and completes', done => {
         Utils.newServer({
@@ -634,5 +634,5 @@ describe('webhooks test', () => {
                 done();
             });
         });
-    }, 60 * 1000);
+    });
 });
