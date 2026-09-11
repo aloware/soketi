@@ -26,7 +26,6 @@ jobs:
 
       matrix:
         node:
-          - 22.x
           - 24.x
         adapter:
           - local
@@ -60,6 +59,13 @@ jobs:
             rate_limiter: redis
             queue_driver: sync
             cache_driver: redis
+          # Smoke job on the other active LTS line: local adapter, sync queue.
+          - node: 22.x
+            adapter: local
+            app_manager: array
+            rate_limiter: local
+            queue_driver: sync
+            cache_driver: memory
 
     name: Node.js ${{ matrix.node }} (adapter:${{ matrix.adapter }} manager:${{ matrix.app_manager }} ratelimiter:${{ matrix.rate_limiter }} queue:${{ matrix.queue_driver }})
 
