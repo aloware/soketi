@@ -2,7 +2,7 @@ import { LocalAdapter } from './local-adapter';
 import { Log } from '../log';
 import { PresenceMemberInfo } from '../channels/presence-channel-manager';
 import { v4 as uuidv4 } from 'uuid';
-import { WebSocket } from 'uWebSockets.js';
+import { WebSocket } from '../websocket';
 
 /**
  *                                          |-----> NODE1 ----> SEEKS DATA (ONREQUEST) ----> SEND TO THE NODE0 ---> NODE0 (ONRESPONSE) APPENDS DATA TO REQUEST OBJECT

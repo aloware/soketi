@@ -23,7 +23,8 @@ jobs:
 
       matrix:
         node:
-          - 16.x
+          - 22.x
+          - 24.x
         adapter:
           - local
           - redis
@@ -62,7 +63,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.0
 
-      - uses: actions/setup-node@v3.8.1
+      - uses: actions/setup-node@v4
         name: Setup Node.js v${{ matrix.node }}
         with:
           node-version: ${{ matrix.node }}

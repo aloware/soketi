@@ -1,5 +1,5 @@
 import * as prom from 'prom-client';
-import { WebSocket } from 'uWebSockets.js';
+import { WebSocket } from '../websocket';
 
 export interface MetricsInterface {
     /**
@@ -65,7 +65,7 @@ export interface MetricsInterface {
     /**
      * Get the stored metrics as JSON.
      */
-    getMetricsAsJson(): Promise<prom.metric[]|void>;
+    getMetricsAsJson(): Promise<prom.MetricObjectWithValues<prom.MetricValue<string>>[]|void>;
 
     /**
      * Reset the metrics at the server level.

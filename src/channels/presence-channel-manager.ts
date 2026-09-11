@@ -3,7 +3,7 @@ import { Log } from '../log';
 import { PrivateChannelManager } from './private-channel-manager';
 import { PusherMessage } from '../message';
 import { Utils } from '../utils';
-import { WebSocket } from 'uWebSockets.js';
+import { WebSocket } from '../websocket';
 
 export interface PresenceMemberInfo {
     [key: string]: any;

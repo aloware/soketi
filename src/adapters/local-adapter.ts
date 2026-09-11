@@ -2,7 +2,7 @@ import { AdapterInterface } from './adapter-interface';
 import { Namespace } from '../namespace';
 import { PresenceMemberInfo } from '../channels/presence-channel-manager';
 import { Server } from '../server';
-import { WebSocket } from 'uWebSockets.js';
+import { WebSocket } from '../websocket';
 
 export class LocalAdapter implements AdapterInterface {
     // TODO: Force disconnect a specific socket

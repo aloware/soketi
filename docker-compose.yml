@@ -58,7 +58,7 @@ services:
       AWS_SECRET_ACCESS_KEY: fake-secret
   initialize_dynamodb:
     container_name: initialize_dynamodb
-    image: node:18-alpine
+    image: node:24-alpine
     volumes:
       - .:/app/
     networks:
