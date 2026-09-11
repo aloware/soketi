@@ -1,7 +1,7 @@
 import { AppInterface } from './app';
 import { ClusterOptions, RedisOptions } from 'ioredis';
 import { ConsumerOptions } from 'sqs-consumer';
-import { SQS } from 'aws-sdk';
+import { SQSClientConfig } from '@aws-sdk/client-sqs';
 
 interface Redis {
     host: string;
@@ -165,8 +165,8 @@ export interface Options {
         sqs: {
             region?: string;
             endpoint?: string;
-            clientOptions?: SQS.Types.ClientConfiguration;
-            consumerOptions?: ConsumerOptions;
+            clientOptions?: SQSClientConfig;
+            consumerOptions?: Partial<ConsumerOptions>;
             queueUrl: string;
             processBatch: boolean;
             batchSize: number;

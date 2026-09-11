@@ -1,16 +1,16 @@
 import { App } from '../app';
-import { AttributeMap } from 'aws-sdk/clients/dynamodb';
+import { AttributeValue, DynamoDBClient, GetItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { BaseAppManager } from './base-app-manager';
 import { boolean } from 'boolean';
-import { DynamoDB } from 'aws-sdk';
 import { Log } from '../log';
 import { Server } from '../server';
+import { unmarshall } from '@aws-sdk/util-dynamodb';
 
 export class DynamoDbAppManager extends BaseAppManager {
     /**
      * The DynamoDB client.
      */
-    protected dynamodb: DynamoDB;
+    protected dynamodb: DynamoDBClient;
 
     /**
      * Create a new app manager instance.
@@ -18,10 +18,9 @@ export class DynamoDbAppManager extends BaseAppManager {
     constructor(protected server: Server) {
         super();
 
-        this.dynamodb = new DynamoDB({
-            apiVersion: '2012-08-10',
+        this.dynamodb = new DynamoDBClient({
             region: server.options.appManager.dynamodb.region,
-            endpoint: server.options.appManager.dynamodb.endpoint,
+            endpoint: server.options.appManager.dynamodb.endpoint || undefined,
         });
     }
 
@@ -29,12 +28,12 @@ export class DynamoDbAppManager extends BaseAppManager {
      * Find an app by given ID.
      */
     findById(id: string): Promise<App|null> {
-        return this.dynamodb.getItem({
+        return this.dynamodb.send(new GetItemCommand({
             TableName: this.server.options.appManager.dynamodb.table,
             Key: {
                 AppId: { S: id },
             },
-        }).promise().then((response) => {
+        })).then((response) => {
             let item = response.Item;
 
             if (!item) {
@@ -60,7 +59,7 @@ export class DynamoDbAppManager extends BaseAppManager {
      * Find an app by given key.
      */
     findByKey(key: string): Promise<App|null> {
-        return this.dynamodb.query({
+        return this.dynamodb.send(new QueryCommand({
             TableName: this.server.options.appManager.dynamodb.table,
             IndexName: 'AppKeyIndex',
             ScanIndexForward: false,
@@ -69,8 +68,8 @@ export class DynamoDbAppManager extends BaseAppManager {
             ExpressionAttributeValues: {
                 ':app_key': { S: key },
             },
-        }).promise().then((response) => {
-            let item = response.Items[0] || null;
+        })).then((response) => {
+            let item = (response.Items || [])[0] || null;
 
             if (!item) {
                 if (this.server.options.debug) {
@@ -94,12 +93,12 @@ export class DynamoDbAppManager extends BaseAppManager {
     /**
      * Transform the marshalled item to a key-value pair.
      */
-    protected unmarshallItem(item: AttributeMap): { [key: string]: any; } {
-        let appObject = DynamoDB.Converter.unmarshall(item);
+    protected unmarshallItem(item: Record<string, AttributeValue>): { [key: string]: any; } {
+        let appObject = unmarshall(item);
 
         // Making sure EnableClientMessages is boolean.
-        if (appObject.EnableClientMessages instanceof Buffer) {
-            appObject.EnableClientMessages = boolean(appObject.EnableClientMessages.toString());
+        if (appObject.EnableClientMessages instanceof Uint8Array) {
+            appObject.EnableClientMessages = boolean(Buffer.from(appObject.EnableClientMessages).toString());
         }
 
         // JSON-decoding the Webhooks field.

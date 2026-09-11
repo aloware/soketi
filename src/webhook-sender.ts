@@ -3,7 +3,7 @@ import async from 'async';
 import axios from 'axios';
 import { createHmac } from 'crypto';
 import { Utils } from './utils';
-import { Lambda } from 'aws-sdk';
+import { InvokeCommand, InvokeCommandInput, LambdaClient } from '@aws-sdk/client-lambda';
 import { Log } from './log';
 import { Server } from './server';
 
@@ -141,33 +141,28 @@ export class WebhookSender {
                         }).then(() => resolveWebhook());
                     } else if (webhook.lambda_function) {
                         // Invoke a Lambda function
-                        const params = {
+                        const params: InvokeCommandInput = {
                             FunctionName: webhook.lambda_function,
                             InvocationType: webhook.lambda.async ? 'Event' : 'RequestResponse',
                             Payload: Buffer.from(JSON.stringify({ payload, headers })),
                         };
 
-                        let lambda = new Lambda({
-                            apiVersion: '2015-03-31',
+                        let lambda = new LambdaClient({
                             region: webhook.lambda.region || 'us-east-1',
                             ...(webhook.lambda.client_options || {}),
                         });
 
-                        lambda.invoke(params, (err, data) => {
-                            if (err) {
-                                if (this.server.options.debug) {
-                                    Log.webhookSenderTitle('❎ Lambda trigger failed.');
-                                    Log.webhookSender({ webhook, err, data });
-                                }
-                            } else {
-                                if (this.server.options.debug) {
-                                    Log.webhookSenderTitle('✅ Lambda triggered.');
-                                    Log.webhookSender({ webhook, payload });
-                                }
+                        lambda.send(new InvokeCommand(params)).then(() => {
+                            if (this.server.options.debug) {
+                                Log.webhookSenderTitle('✅ Lambda triggered.');
+                                Log.webhookSender({ webhook, payload });
                             }
-
-                            resolveWebhook();
-                        });
+                        }).catch(err => {
+                            if (this.server.options.debug) {
+                                Log.webhookSenderTitle('❎ Lambda trigger failed.');
+                                Log.webhookSender({ webhook, err });
+                            }
+                        }).then(() => resolveWebhook());
                     }
                 }).then(() => finish());
             }).catch(err => {

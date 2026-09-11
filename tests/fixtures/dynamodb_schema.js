@@ -1,7 +1,6 @@
-const AWS = require('aws-sdk');
+const { CreateTableCommand, DescribeTableCommand, DynamoDBClient, PutItemCommand } = require('@aws-sdk/client-dynamodb');
 
-let ddb = new AWS.DynamoDB({
-    apiVersion: '2012-08-10',
+let ddb = new DynamoDBClient({
     region: 'us-east-1',
     endpoint: `http://${process.env.DYNAMODB_URL || '127.0.0.1:8000'}`,
 });
@@ -14,8 +13,8 @@ let createRecord = () => {
             AppKey: { S: 'app-key' },
             AppSecret: { S: 'app-secret' },
             MaxConnections: { N: '-1' },
-            EnableClientMessages: { B: 'false' },
-            Enabled: { B: 'true' },
+            EnableClientMessages: { B: Buffer.from('false') },
+            Enabled: { B: Buffer.from('true') },
             MaxBackendEventsPerSecond: { N: '-1' },
             MaxClientEventsPerSecond: { N: '-1' },
             MaxReadRequestsPerSecond: { N: '-1' },
@@ -33,11 +32,11 @@ let createRecord = () => {
             // MaxEventNameLength: { N: '-1' },
             // MaxEventPayloadInKb: { N: '-1' },
             // MaxEventBatchSize: { N: '-1' },
-            // EnableUserAuthentication: { B: 'false' }
+            // EnableUserAuthentication: { B: Buffer.from('false') }
         },
     };
 
-    return ddb.putItem(params).promise().then(() => {
+    return ddb.send(new PutItemCommand(params)).then(() => {
         console.log('Record created.');
     }).catch(err => {
         console.error(err);
@@ -45,12 +44,12 @@ let createRecord = () => {
     });
 };
 
-ddb.describeTable({ TableName: 'apps' }).promise().then((result) => {
+ddb.send(new DescribeTableCommand({ TableName: 'apps' })).then((result) => {
     createRecord();
 }).catch(err => {
     console.error(err);
 
-    ddb.createTable({
+    ddb.send(new CreateTableCommand({
         TableName: 'apps',
         AttributeDefinitions: [
             {
@@ -87,7 +86,7 @@ ddb.describeTable({ TableName: 'apps' }).promise().then((result) => {
             ReadCapacityUnits: 100,
             WriteCapacityUnits: 100,
         },
-    }).promise().then(() => {
+    })).then(() => {
         console.log('Table created.');
     }).then(createRecord).catch((err) => {
         console.error(err);

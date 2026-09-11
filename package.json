@@ -24,7 +24,10 @@
   "dependencies": {
     "arraybuffer-to-string": "^1.0.2",
     "async": "^3.2.4",
-    "aws-sdk": "^2.1426.0",
+    "@aws-sdk/client-dynamodb": "^3.1131.0",
+    "@aws-sdk/client-lambda": "^3.1131.0",
+    "@aws-sdk/client-sqs": "^3.1131.0",
+    "@aws-sdk/util-dynamodb": "^3.996.9",
     "axios": "^0.27.2",
     "boolean": "^3.1.4",
     "bullmq": "^6.3.4",
@@ -44,7 +47,7 @@
     "pusher": "^5.1.0-beta",
     "query-string": "^7.1.0",
     "rate-limiter-flexible": "^2.3.8",
-    "sqs-consumer": "^5.7.0",
+    "sqs-consumer": "^15.0.3",
     "uuid": "^8.3.2",
     "uWebSockets.js": "https://github.com/uNetworking/uWebSockets.js.git#v20.54.0",
     "yargs": "^17.5.1"
