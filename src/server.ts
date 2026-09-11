@@ -5,6 +5,7 @@ import { CacheManager } from './cache-managers/cache-manager';
 import { CacheManagerInterface } from './cache-managers/cache-manager-interface';
 import { HttpHandler } from './http-handler';
 import { HttpRequest, HttpResponse, TemplatedApp } from 'uWebSockets.js';
+import { WebSocket } from './websocket';
 import { Log } from './log';
 import { Metrics, MetricsInterface } from './metrics';
 import { Node } from './node';
@@ -16,7 +17,6 @@ import { RateLimiterInterface } from './rate-limiters/rate-limiter-interface';
 import { uWebSocketMessage } from './message';
 import { v4 as uuidv4 } from 'uuid';
 import { WebhookSender } from './webhook-sender';
-import { WebSocket } from 'uWebSockets.js';
 import { WsHandler } from './ws-handler';
 
 const Discover = require('node-discover');

@@ -1,5 +1,5 @@
 import { PresenceMember, PresenceMemberInfo } from './channels/presence-channel-manager';
-import { WebSocket } from 'uWebSockets.js';
+import { WebSocket } from './websocket';
 
 export class Namespace {
     /**

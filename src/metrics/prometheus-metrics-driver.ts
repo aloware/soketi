@@ -1,5 +1,5 @@
 import * as prom from 'prom-client';
-import { WebSocket } from 'uWebSockets.js';
+import { WebSocket } from '../websocket';
 import { MetricsInterface } from './metrics-interface';
 import { Server } from '../server';
 import { Utils } from '../utils';
@@ -167,7 +167,7 @@ export class PrometheusMetricsDriver implements MetricsInterface {
     /**
      * Get the stored metrics as JSON.
      */
-    getMetricsAsJson(): Promise<prom.metric[]|void> {
+    getMetricsAsJson(): Promise<prom.MetricObjectWithValues<prom.MetricValue<string>>[]|void> {
         return this.register.getMetricsAsJSON();
     }
 

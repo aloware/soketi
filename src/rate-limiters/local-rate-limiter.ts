@@ -2,7 +2,7 @@ import { App } from './../app';
 import { ConsumptionResponse, RateLimiterInterface } from './rate-limiter-interface';
 import { RateLimiterAbstract, RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible';
 import { Server } from '../server';
-import { WebSocket } from 'uWebSockets.js';
+import { WebSocket } from '../websocket';
 
 export class LocalRateLimiter implements RateLimiterInterface {
     /**

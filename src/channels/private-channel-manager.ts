@@ -1,7 +1,7 @@
 import { App } from '../app';
 import { JoinResponse, PublicChannelManager } from './public-channel-manager';
 import { PusherMessage } from '../message';
-import { WebSocket } from 'uWebSockets.js';
+import { WebSocket } from '../websocket';
 
 const Pusher = require('pusher');
 

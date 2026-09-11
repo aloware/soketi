@@ -2,6 +2,7 @@ import { App } from './app';
 import async from 'async';
 import { EncryptedPrivateChannelManager } from './channels';
 import { HttpRequest, HttpResponse } from 'uWebSockets.js';
+import { WebSocket } from './websocket';
 import { Log } from './log';
 import { Namespace } from './namespace';
 import { PresenceChannelManager } from './channels';
@@ -11,7 +12,6 @@ import { PublicChannelManager } from './channels';
 import { PusherMessage, uWebSocketMessage } from './message';
 import { Server } from './server';
 import { Utils } from './utils';
-import { WebSocket } from 'uWebSockets.js';
 
 const ab2str = require('arraybuffer-to-string');
 const Pusher = require('pusher');
