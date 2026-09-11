@@ -58,14 +58,26 @@ export class WebhookSender {
 
             const { appKey, payload, originalPusherSignature } = rawData;
 
+            let finish = () => {
+                if (typeof done === 'function') {
+                    done();
+                }
+            };
+
             server.appManager.findByKey(appKey).then(app => {
+                if (!app) {
+                    Log.warning(`Webhook job ${job.id} dropped: no app found for key "${appKey}".`);
+
+                    return finish();
+                }
+
                 // Ensure the payload hasn't been tampered with between the job being dispatched
                 // and here, as we may need to recalculate the signature post filtration.
                 if (originalPusherSignature !== createWebhookHmac(JSON.stringify(payload), app.secret)) {
-                    return;
+                    return finish();
                 }
 
-                async.each(app.webhooks, (webhook: WebhookInterface, resolveWebhook) => {
+                return async.each(app.webhooks, (webhook: WebhookInterface, resolveWebhook) => {
                     const originalEventsLength = payload.events.length;
                     let filteredPayloadEvents = payload.events;
 
@@ -157,11 +169,11 @@ export class WebhookSender {
                             resolveWebhook();
                         });
                     }
-                }).then(() => {
-                    if (typeof done === 'function') {
-                        done();
-                    }
-                });
+                }).then(() => finish());
+            }).catch(err => {
+                Log.error(`Webhook job ${job.id} failed: ${err instanceof Error ? err.message : err}`);
+
+                finish();
             });
         };
 

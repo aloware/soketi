@@ -2,6 +2,7 @@ import { App } from '../src/app';
 import { Server } from '../src/server';
 import { Utils } from './utils';
 import { createWebhookHmac } from "../src/webhook-sender";
+import { Log } from '../src/log';
 
 jest.retryTimes(parseInt(process.env.RETRY_TIMES || '1'));
 
@@ -611,4 +612,27 @@ describe('webhooks test', () => {
             });
         });
     }, 20_000);
+
+    Utils.shouldRun(Utils.appManagerIs('array') && Utils.queueDriverIs('sync'))('webhook job for an unknown app key is dropped and completes', done => {
+        Utils.newServer({
+            'database.redis.keyPrefix': 'unknown-app-webhook',
+        }, (server: Server) => {
+            let warning = jest.spyOn(Log, 'warning').mockImplementation(() => {});
+
+            server.queueManager.addToQueue('member_removed_webhooks', {
+                appKey: 'unknown-key',
+                appId: 'unknown-id',
+                payload: {
+                    time_ms: Date.now(),
+                    events: [{ name: 'member_removed', channel: 'presence-room', user_id: '1' }],
+                },
+                originalPusherSignature: 'irrelevant',
+            }).then(() => {
+                expect(warning).toHaveBeenCalledWith(expect.stringContaining('unknown-key'));
+
+                warning.mockRestore();
+                done();
+            });
+        });
+    });
 });
