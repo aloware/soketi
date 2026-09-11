@@ -105,8 +105,8 @@ jobs:
           sudo systemctl start postgresql.service
           pg_isready
           sudo -u postgres psql --command="CREATE USER testing PASSWORD 'testing'"
-          sudo -u postgres createdb --owner=postgres testing
-          psql --host=127.0.0.1 --username=testing testing < tests/fixtures/postgres_schema.sql
+          sudo -u postgres createdb --owner=testing testing
+          psql --host=127.0.0.1 --username=testing --set ON_ERROR_STOP=1 testing < tests/fixtures/postgres_schema.sql
         env:
           PGPASSWORD: testing
 
