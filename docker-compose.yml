@@ -1,5 +1,3 @@
-version: "3"
-
 networks:
   soketi:
     driver: bridge
@@ -7,7 +5,7 @@ networks:
 services:
   localstack:
     container_name: localstack
-    image: localstack/localstack
+    image: localstack/localstack:4.14
     ports:
       - "4510-4530:4510-4530"
       - "4566:4566"
