@@ -4,7 +4,7 @@ A Pusher-compatible WebSockets server, built on [uWebSockets.js](https://github.
 
 This is Aloware's maintained fork of [soketi/soketi](https://github.com/soketi/soketi), created by Alex Renoki. The last upstream release is 1.6.1 from March 2024. Aloware maintains this fork for its own deployment and publishes it under the same AGPL-3.0 license.
 
-![CI](https://github.com/aloware/soketi/workflows/CI/badge.svg?branch=1.x)
+![CI](https://github.com/aloware/soketi/workflows/CI/badge.svg?branch=main)
 
 ## What differs from upstream
 
@@ -42,7 +42,7 @@ The server listens on port 6001. `GET /` answers the health check. `GET /ready` 
 
 ## Branches and releases
 
-- `1.x` is the maintained branch and the default branch.
+- `main` is the maintained branch and the default branch.
 - Every pull request runs the test matrix on Node 24, plus a smoke job on Node 22.
 - A tag `v<version>` creates a GitHub Release with the npm tarball, publishes `@aloware/soketi` to GitHub Packages, and pushes the `debian` and `distroless` images.
 

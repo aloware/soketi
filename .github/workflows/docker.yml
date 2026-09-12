@@ -3,7 +3,7 @@ name: Docker
 on:
   push:
     branches:
-      - 1.x
+      - main
     tags:
       - "v*"
   pull_request:
@@ -40,7 +40,7 @@ jobs:
             latest=false
           tags: |
             type=raw,value=latest-${{ matrix.variant }},enable={{is_default_branch}}
-            type=raw,value=latest,enable=${{ matrix.variant == 'debian' && github.ref == 'refs/heads/1.x' }}
+            type=raw,value=latest,enable=${{ matrix.variant == 'debian' && github.ref == 'refs/heads/main' }}
             type=semver,pattern={{version}}-${{ matrix.variant }}
             type=semver,pattern={{major}}.{{minor}}-${{ matrix.variant }}
             type=semver,pattern={{version}},enable=${{ matrix.variant == 'debian' }}
