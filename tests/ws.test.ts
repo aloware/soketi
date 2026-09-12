@@ -71,7 +71,7 @@ describe('ws test', () => {
             let channelName = `presence-${Utils.randomChannelName()}`;
 
             client1.connection.bind('connected', () => {
-                let client2 = Utils.newClientForPresenceUser(user2);
+                let client2;
 
                 let channel = client1.subscribe(channelName);
 
@@ -84,6 +84,9 @@ describe('ws test', () => {
                 });
 
                 channel.bind('pusher:subscription_succeeded', () => {
+                    // Create the second client only now, so its `connected` handler is bound before it can fire.
+                    client2 = Utils.newClientForPresenceUser(user2);
+
                     client2.connection.bind('connected', () => {
                         let channel = client2.subscribe(channelName);
 
