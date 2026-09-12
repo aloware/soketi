@@ -40,14 +40,19 @@ let createRecord = () => {
         console.log('Record created.');
     }).catch(err => {
         console.error(err);
-        console.log('Record already existent.');
+        process.exitCode = 1;
     });
 };
 
 ddb.send(new DescribeTableCommand({ TableName: 'apps' })).then((result) => {
     createRecord();
 }).catch(err => {
-    console.error(err);
+    if (err.name !== 'ResourceNotFoundException') {
+        console.error(err);
+        process.exitCode = 1;
+
+        return;
+    }
 
     ddb.send(new CreateTableCommand({
         TableName: 'apps',
@@ -90,6 +95,9 @@ ddb.send(new DescribeTableCommand({ TableName: 'apps' })).then((result) => {
         console.log('Table created.');
     }).then(createRecord).catch((err) => {
         console.error(err);
-        console.log('Table already existent.');
+
+        if (err.name !== 'ResourceInUseException') {
+            process.exitCode = 1;
+        }
     });
 });

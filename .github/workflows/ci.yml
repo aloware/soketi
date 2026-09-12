@@ -113,7 +113,8 @@ jobs:
       - name: Setup DynamoDB
         if: "matrix.app_manager == 'dynamodb'"
         run: |
-          docker run -p 8000:8000 amazon/dynamodb-local:1.22.0 &
+          docker run -d -p 8000:8000 amazon/dynamodb-local:1.22.0
+          for i in $(seq 1 30); do curl -s -o /dev/null http://127.0.0.1:8000 && break; sleep 1; done
           node tests/fixtures/dynamodb_schema.js
         env:
           AWS_ACCESS_KEY_ID: fake-id
