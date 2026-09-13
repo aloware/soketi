@@ -4,7 +4,7 @@ A Pusher-compatible WebSockets server, built on [uWebSockets.js](https://github.
 
 This is Aloware's maintained fork of [soketi/soketi](https://github.com/soketi/soketi), created by Alex Renoki. The last upstream release is 1.6.1 from March 2024. Aloware maintains this fork for its own deployment and publishes it under the same AGPL-3.0 license.
 
-![CI](https://github.com/aloware/soketi/workflows/CI/badge.svg?branch=main)
+![CI](https://github.com/aloware/soketi/actions/workflows/ci.yml/badge.svg?branch=main)
 
 ## What differs from upstream
 
